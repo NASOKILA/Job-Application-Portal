@@ -1,12 +1,29 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { JobService } from '../job.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-job-details',
-  standalone: true,
-  imports: [],
   templateUrl: './job-details.component.html',
-  styleUrl: './job-details.component.css'
+  standalone: true,
+  imports: [CommonModule],
+  styleUrls: ['./job-details.component.css']
 })
-export class JobDetailsComponent {
+export class JobDetailsComponent implements OnInit {
+  job: any;
 
+  constructor(
+    private route: ActivatedRoute,
+    private jobService: JobService
+  ) { }
+
+  ngOnInit(): void {
+    const id = this.route.snapshot.paramMap.get('id');
+    if (id) {
+      this.jobService.getJobApplication(id).subscribe(data => {
+        this.job = data;
+      });
+    }
+  }
 }

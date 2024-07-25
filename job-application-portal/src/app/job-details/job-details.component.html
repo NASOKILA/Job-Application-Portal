@@ -1,1 +1,13 @@
-<p>job-details works!</p>
+<div class="container mt-5" *ngIf="job">
+    <div class="card">
+      <div class="card-header">
+        <h2>{{ job.name }}</h2>
+      </div>
+      <div class="card-body">
+        <h5 class="card-title">{{ job.position }}</h5>
+        <p class="card-text"><strong>Email:</strong> {{ job.email }}</p>
+        <a [href]="job.fileUrl" class="btn btn-primary" download>Download Resume</a>
+      </div>
+    </div>
+  </div>
+  
