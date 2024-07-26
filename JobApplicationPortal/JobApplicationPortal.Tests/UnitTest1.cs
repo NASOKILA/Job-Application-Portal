@@ -1,3 +1,5 @@
+using NUnit.Framework;
+
 namespace JobApplicationPortal.Tests
 {
     public class Tests

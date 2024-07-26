@@ -1,11 +1,22 @@
+using Microsoft.EntityFrameworkCore;
+using Pinewood.Customers.Db;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+string dbConnectionString = builder.Configuration.GetConnectionString("Database");
+
+builder.Services.AddDbContext<JobApplicationPortalDbContext>(options => options.UseSqlServer(dbConnectionString));
+
+builder.Services.AddDbContext<JobApplicationPortalDbContext>(options =>
+    options.UseSqlServer(dbConnectionString));
+
+builder.Services.AddScoped<DatabaseInitializer>();
 
 var app = builder.Build();
 
