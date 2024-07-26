@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
-namespace Pinewood.Customers.Db
+namespace JobApplicationPortal.DB
 {
     public class DatabaseInitializer
     {

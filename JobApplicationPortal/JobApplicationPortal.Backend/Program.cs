@@ -1,5 +1,6 @@
+using JobApplicationPortal.Backend.API.Mappers;
+using JobApplicationPortal.DB;
 using Microsoft.EntityFrameworkCore;
-using Pinewood.Customers.Db;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +18,8 @@ builder.Services.AddDbContext<JobApplicationPortalDbContext>(options =>
     options.UseSqlServer(dbConnectionString));
 
 builder.Services.AddScoped<DatabaseInitializer>();
+
+builder.Services.AddAutoMapper(typeof(ApplicantMappingProfile));
 
 var app = builder.Build();
 

@@ -1,7 +1,7 @@
 ﻿using JobApplicationPortal.Models.DbModels;
 using Microsoft.EntityFrameworkCore;
 
-namespace Pinewood.Customers.Db
+namespace JobApplicationPortal.DB
 {
     public class JobApplicationPortalDbContext : DbContext
     {
