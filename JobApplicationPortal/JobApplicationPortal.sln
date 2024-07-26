@@ -1,0 +1,49 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34525.116
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JobApplicationPortal.Backend", "JobApplicationPortal.Backend\JobApplicationPortal.Backend.csproj", "{5A11E000-03FD-4432-9BE7-EEF6FB0B4B87}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JobApplicationPortal.DB", "JobApplicationPortal.DB\JobApplicationPortal.DB.csproj", "{0C3BB4D7-76EF-45DB-8070-B1D2803C4B84}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JobApplicationPortal.Models", "JobApplicationPortal.Models\JobApplicationPortal.Models.csproj", "{8C743B30-DB07-4372-A287-D560A05275F5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JobApplicationPortal.Repositories", "JobApplicationPortal.Repositories\JobApplicationPortal.Repositories.csproj", "{F5193731-08B4-435C-A353-2D24D0449E81}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JobApplicationPortal.Tests", "JobApplicationPortal.Tests\JobApplicationPortal.Tests.csproj", "{442D57A0-6D60-4711-A778-8FBDE45F1E85}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5A11E000-03FD-4432-9BE7-EEF6FB0B4B87}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5A11E000-03FD-4432-9BE7-EEF6FB0B4B87}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5A11E000-03FD-4432-9BE7-EEF6FB0B4B87}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5A11E000-03FD-4432-9BE7-EEF6FB0B4B87}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0C3BB4D7-76EF-45DB-8070-B1D2803C4B84}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C3BB4D7-76EF-45DB-8070-B1D2803C4B84}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C3BB4D7-76EF-45DB-8070-B1D2803C4B84}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C3BB4D7-76EF-45DB-8070-B1D2803C4B84}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8C743B30-DB07-4372-A287-D560A05275F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C743B30-DB07-4372-A287-D560A05275F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C743B30-DB07-4372-A287-D560A05275F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C743B30-DB07-4372-A287-D560A05275F5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F5193731-08B4-435C-A353-2D24D0449E81}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F5193731-08B4-435C-A353-2D24D0449E81}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F5193731-08B4-435C-A353-2D24D0449E81}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F5193731-08B4-435C-A353-2D24D0449E81}.Release|Any CPU.Build.0 = Release|Any CPU
+		{442D57A0-6D60-4711-A778-8FBDE45F1E85}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{442D57A0-6D60-4711-A778-8FBDE45F1E85}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{442D57A0-6D60-4711-A778-8FBDE45F1E85}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{442D57A0-6D60-4711-A778-8FBDE45F1E85}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B0ABBC71-C246-470D-8689-2AE6FC905AF3}
+	EndGlobalSection
+EndGlobal
