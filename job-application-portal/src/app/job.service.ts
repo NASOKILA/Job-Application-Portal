@@ -10,21 +10,24 @@ const MOCK_JOBS = [
     name: 'John Doe',
     email: 'john.doe@example.com',
     position: 'Software Developer',
-    resume: 'john_doe_resume.pdf'
+    resume: 'john_doe_resume.pdf',
+    resumeUrl: 'https://marketplace.canva.com/EAFRuCp3DcY/1/0/1131w/canva-black-white-minimalist-cv-resume-f5JNR-K5jjw.jpg'
   },
   {
     id: '2',
     name: 'Jane Smith',
     email: 'jane.smith@example.com',
     position: 'Project Manager',
-    resume: 'jane_smith_resume.pdf'
+    resume: 'jane_smith_resume.pdf',
+    resumeUrl: 'https://marketplace.canva.com/EAFRuCp3DcY/1/0/1131w/canva-black-white-minimalist-cv-resume-f5JNR-K5jjw.jpg'
   },
   {
     id: '3',
     name: 'Bob Johnson',
     email: 'bob.johnson@example.com',
     position: 'UX Designer',
-    resume: 'bob_johnson_resume.pdf'
+    resume: 'bob_johnson_resume.pdf',
+    resumeUrl: 'https://marketplace.canva.com/EAFRuCp3DcY/1/0/1131w/canva-black-white-minimalist-cv-resume-f5JNR-K5jjw.jpg'
   }
 ];
 
