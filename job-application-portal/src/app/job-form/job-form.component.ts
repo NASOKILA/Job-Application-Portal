@@ -22,7 +22,6 @@ export class JobFormComponent {
       email: ['', [Validators.required, Validators.email]],
       position: ['', Validators.required],
       resume: [null, Validators.required],
-      certifications: [null, Validators.required]
     });
   }
 
