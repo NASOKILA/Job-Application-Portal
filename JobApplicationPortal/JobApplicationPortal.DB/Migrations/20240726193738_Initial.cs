@@ -5,13 +5,13 @@
 namespace JobApplicationPortal.DB.Migrations
 {
     /// <inheritdoc />
-    public partial class Init : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Applicant",
+                name: "JobApplicant",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -19,12 +19,12 @@ namespace JobApplicationPortal.DB.Migrations
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Position = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ResumeFileUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CertificationFilesUrls = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    ResumeFilePath = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CertificationsFilesPath = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Applicant", x => x.Id);
+                    table.PrimaryKey("PK_JobApplicant", x => x.Id);
                 });
         }
 
@@ -32,7 +32,7 @@ namespace JobApplicationPortal.DB.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Applicant");
+                name: "JobApplicant");
         }
     }
 }
