@@ -21,7 +21,7 @@ namespace JobApplicationPortal.DB.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("JobApplicationPortal.Models.DbModels.JobApplicant", b =>
+            modelBuilder.Entity("JobApplicationPortal.Models.DbModels.JobApplicants", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -51,7 +51,7 @@ namespace JobApplicationPortal.DB.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("JobApplicant");
+                    b.ToTable("JobApplicants");
                 });
 #pragma warning restore 612, 618
         }

@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace JobApplicationPortal.DB.Migrations
 {
     [DbContext(typeof(JobApplicationPortalDbContext))]
-    [Migration("20240726193738_Initial")]
-    partial class Initial
+    [Migration("20240728184455_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,7 +24,7 @@ namespace JobApplicationPortal.DB.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("JobApplicationPortal.Models.DbModels.JobApplicant", b =>
+            modelBuilder.Entity("JobApplicationPortal.Models.DbModels.JobApplicants", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -54,7 +54,7 @@ namespace JobApplicationPortal.DB.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("JobApplicant");
+                    b.ToTable("JobApplicants");
                 });
 #pragma warning restore 612, 618
         }

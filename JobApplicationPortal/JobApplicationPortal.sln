@@ -3,20 +3,22 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34525.116
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JobApplicationPortal.Backend", "JobApplicationPortal.Backend\JobApplicationPortal.Backend.csproj", "{5A11E000-03FD-4432-9BE7-EEF6FB0B4B87}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JobApplicationPortal.Backend", "JobApplicationPortal.Backend\JobApplicationPortal.Backend.csproj", "{5A11E000-03FD-4432-9BE7-EEF6FB0B4B87}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JobApplicationPortal.DB", "JobApplicationPortal.DB\JobApplicationPortal.DB.csproj", "{0C3BB4D7-76EF-45DB-8070-B1D2803C4B84}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JobApplicationPortal.DB", "JobApplicationPortal.DB\JobApplicationPortal.DB.csproj", "{0C3BB4D7-76EF-45DB-8070-B1D2803C4B84}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JobApplicationPortal.Models", "JobApplicationPortal.Models\JobApplicationPortal.Models.csproj", "{8C743B30-DB07-4372-A287-D560A05275F5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JobApplicationPortal.Models", "JobApplicationPortal.Models\JobApplicationPortal.Models.csproj", "{8C743B30-DB07-4372-A287-D560A05275F5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JobApplicationPortal.Repositories", "JobApplicationPortal.Repositories\JobApplicationPortal.Repositories.csproj", "{F5193731-08B4-435C-A353-2D24D0449E81}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JobApplicationPortal.Repositories", "JobApplicationPortal.Repositories\JobApplicationPortal.Repositories.csproj", "{F5193731-08B4-435C-A353-2D24D0449E81}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JobApplicationPortal.Tests", "JobApplicationPortal.Tests\JobApplicationPortal.Tests.csproj", "{442D57A0-6D60-4711-A778-8FBDE45F1E85}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JobApplicationPortal.Tests", "JobApplicationPortal.Tests\JobApplicationPortal.Tests.csproj", "{442D57A0-6D60-4711-A778-8FBDE45F1E85}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{73E96DC8-F3B5-4B4E-AEF6-95789AAF4957}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
 	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Resumes", "Resumes", "{586E8B9C-AF00-42EE-8E59-7D655B7BB95B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,6 +49,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{586E8B9C-AF00-42EE-8E59-7D655B7BB95B} = {73E96DC8-F3B5-4B4E-AEF6-95789AAF4957}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B0ABBC71-C246-470D-8689-2AE6FC905AF3}

@@ -6,8 +6,8 @@ using JobApplicationPortal.Models.Interfaces;
 namespace JobApplicationPortal.Models.DbModels
 {
     [ExcludeFromCodeCoverage]
-    [Table("JobApplicant")]
-    public class JobApplicant : IJobApplicant, IEntityBase
+    [Table("JobApplicants")]
+    public class JobApplicants : IJobApplicant, IEntityBase
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }

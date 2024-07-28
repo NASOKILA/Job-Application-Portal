@@ -5,13 +5,13 @@
 namespace JobApplicationPortal.DB.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class Init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "JobApplicant",
+                name: "JobApplicants",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -24,7 +24,7 @@ namespace JobApplicationPortal.DB.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_JobApplicant", x => x.Id);
+                    table.PrimaryKey("PK_JobApplicants", x => x.Id);
                 });
         }
 
@@ -32,7 +32,7 @@ namespace JobApplicationPortal.DB.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "JobApplicant");
+                name: "JobApplicants");
         }
     }
 }

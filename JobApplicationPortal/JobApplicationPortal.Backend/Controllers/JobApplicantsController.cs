@@ -22,12 +22,12 @@ namespace JobApplicationApi.Controllers
             _mapper = mapper;
         }
 
-        [HttpPost("submitJobApplicant")]
-        public async Task<IActionResult> SubmitJobApplication([FromForm] JobApplicantModel model)
+        [HttpPost("submit")]
+        public async Task<IActionResult> Submit([FromForm] JobApplicantModel model)
         {
             if (ModelState.IsValid)
             {
-                var jobApplicant = _mapper.Map<JobApplicant>(model); 
+                var jobApplicant = _mapper.Map<JobApplicants>(model);
                 
                 if (model.Resume != null)
                 {
@@ -63,7 +63,7 @@ namespace JobApplicationApi.Controllers
         }
 
         [HttpGet("downloadResume")]
-        public async Task<IActionResult> DownloadFile([FromQuery] string fileName)
+        public async Task<IActionResult> DownloadResume([FromQuery] string fileName)
         {
             if (string.IsNullOrEmpty(fileName))
             {

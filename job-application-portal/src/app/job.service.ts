@@ -37,12 +37,12 @@ const MOCK_JOBS = [
 })
 export class JobService {
 
-  private apiUrl = 'http://localhost:5000/api/job';
+  private apiUrl = 'https://localhost:7183/api/JobApplicants';
 
   constructor(private http: HttpClient) { }
 
    submitJobApplicant(formData: FormData): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/submitJobApplicant`, formData);
+    return this.http.post<any>(`${this.apiUrl}/submit`, formData);
   }
 
   // submitJobApplication(formData: FormData): Observable<any> {

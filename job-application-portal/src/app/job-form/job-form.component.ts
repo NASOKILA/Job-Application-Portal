@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { JobService } from '../job.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-job-form',
@@ -16,13 +17,12 @@ export class JobFormComponent {
   selectedResume: File | null = null;
   selectedCertifications: File[] = [];
 
-  constructor(private fb: FormBuilder, private jobService: JobService) {
+  constructor(private fb: FormBuilder, private jobService: JobService, private router: Router) {
     this.jobForm = this.fb.group({
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       position: ['', Validators.required],
-      resume: [null, Validators.required],
-      certifications: [null, Validators.required]
+      resume: [null, Validators.required]
     });
   }
 
@@ -45,7 +45,7 @@ export class JobFormComponent {
   }
 
   onSubmit() {
-    if (this.jobForm.valid && this.selectedResume && this.selectedCertifications.length > 0) {
+    if (this.jobForm.valid && this.selectedResume) {
       const formData = new FormData();
       formData.append('name', this.jobForm.get('name')?.value);
       formData.append('email', this.jobForm.get('email')?.value);
@@ -58,6 +58,7 @@ export class JobFormComponent {
 
       this.jobService.submitJobApplicant(formData).subscribe(response => {
         console.log(response);
+        this.router.navigate(['/jobs']);
       });
 
       // Optionally reset the form

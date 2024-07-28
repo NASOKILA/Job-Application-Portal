@@ -17,6 +17,7 @@ namespace JobApplicationPortal.Models
 
         [Required(ErrorMessage = "Resume is required")]
         public IFormFile Resume { get; set; }
-        public List<IFormFile> Certifications { get; set; }
+
+        public List<IFormFile>? Certifications { get; set; }
     }
 }
