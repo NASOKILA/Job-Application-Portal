@@ -61,7 +61,6 @@ export class JobFormComponent {
         this.router.navigate(['/jobs']);
       });
 
-      // Optionally reset the form
       this.jobForm.reset();
       this.selectedResume = null;
       this.selectedCertifications = [];

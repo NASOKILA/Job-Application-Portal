@@ -7,7 +7,7 @@
           <small>{{ job.position }}</small>
         </div>
         <p class="mb-1">{{ job.email }}</p>
-        <small><a [routerLink]="['/jobs', job.id]" class="btn btn-primary">View Details</a></small>
+        <small><a [routerLink]="['/jobs', job.uniqueId]" class="btn btn-primary">View Details</a></small>
       </div>
     </div>
   </div>

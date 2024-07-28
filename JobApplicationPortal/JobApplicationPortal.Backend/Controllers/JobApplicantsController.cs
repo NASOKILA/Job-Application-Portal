@@ -3,6 +3,7 @@ using JobApplicationPortal.DB;
 using JobApplicationPortal.Models;
 using JobApplicationPortal.Models.DbModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.IO.Compression;
 
 namespace JobApplicationApi.Controllers
@@ -29,26 +30,28 @@ namespace JobApplicationApi.Controllers
             {
                 var jobApplicant = _mapper.Map<JobApplicants>(model);
                 
+                jobApplicant.UniqueId = Guid.NewGuid().ToString();
+
                 if (model.Resume != null)
                 {
-                    var resumePath = Path.Combine(_env.ContentRootPath, "Resumes", model.Resume.FileName);
+                    var resumePath = Path.Combine(_env.ContentRootPath, "Resumes", $"{jobApplicant.UniqueId}_{model.Resume.FileName}");
                     using (var stream = new FileStream(resumePath, FileMode.Create))
                     {
                         await model.Resume.CopyToAsync(stream);
                     }
-                    jobApplicant.ResumeFileName = model.Resume.FileName;
+                    jobApplicant.ResumeFileName = $"{jobApplicant.UniqueId}_{model.Resume.FileName}";
                 }
 
                 if (model.Certifications != null)
                 {
                     foreach (var certification in model.Certifications)
                     {
-                        var certificationPath = Path.Combine(_env.ContentRootPath, "Certifications", certification.FileName);
+                        var certificationPath = Path.Combine(_env.ContentRootPath, "Certifications", $"{jobApplicant.UniqueId}_{certification.FileName}");
                         using (var stream = new FileStream(certificationPath, FileMode.Create))
                         {
                             await certification.CopyToAsync(stream);
                         }
-                        jobApplicant.CertificationsFilesNames.Add(certification.FileName);
+                        jobApplicant.CertificationsFilesNames.Add($"{jobApplicant.UniqueId}_{certification.FileName}");
                     }
                 }
 
@@ -62,15 +65,22 @@ namespace JobApplicationApi.Controllers
             return BadRequest(new { success = false, message = "Invalid data submitted." });
         }
 
-        [HttpGet("downloadResume")]
-        public async Task<IActionResult> DownloadResume([FromQuery] string fileName)
+        [HttpGet("downloadResumeByApplicantId/{uniqueId}")]
+        public async Task<IActionResult> DownloadResume(string uniqueId)
         {
-            if (string.IsNullOrEmpty(fileName))
+            var jobApplicant = await _context.JobApplicants.FirstOrDefaultAsync(x => x.UniqueId == uniqueId);
+
+            if (jobApplicant == null)
+            {
+                return NotFound(new { success = false, message = "Job applicant not found." });
+            }
+
+            if (string.IsNullOrEmpty(jobApplicant.ResumeFileName))
             {
                 return BadRequest(new { success = false, message = "File path is required." });
             }
 
-            var fullPath = Path.Combine(_env.ContentRootPath, "Resumes/" + fileName);
+            var fullPath = Path.Combine(_env.ContentRootPath, "Resumes/" + jobApplicant.ResumeFileName);
 
             if (!System.IO.File.Exists(fullPath))
             {
@@ -85,10 +95,32 @@ namespace JobApplicationApi.Controllers
 
             memory.Position = 0;
 
-            var file = Path.GetFileName(fullPath);
+            var file = Path.GetFileName(fullPath).Split("_")[1];
 
             return File(memory, "APPLICATION/octet-stream", file);
         }
 
+        [HttpGet("getAllJobApplicants")]
+        public async Task<IActionResult> GetAllJobApplicants()
+        {
+            var jobApplicants = await _context.JobApplicants.ToListAsync();
+
+            var mappedJobApplicants = _mapper.Map<List<JobApplicants>>(jobApplicants);
+
+            return Ok(mappedJobApplicants);
+        }
+
+        [HttpGet("getJobApplicantById/{uniqueId}")]
+        public async Task<IActionResult> GetJobApplicantById(string uniqueId)
+        {
+            var jobApplicant = await _context.JobApplicants.FirstOrDefaultAsync(x => x.UniqueId == uniqueId);
+
+            if (jobApplicant == null)
+            {
+                return NotFound(new { success = false, message = "Job applicant not found." });
+            }
+
+            return Ok(jobApplicant);
+        }
     }
 }

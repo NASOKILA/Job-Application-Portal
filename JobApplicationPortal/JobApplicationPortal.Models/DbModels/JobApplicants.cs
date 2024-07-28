@@ -24,6 +24,8 @@ namespace JobApplicationPortal.Models.DbModels
         [Required(ErrorMessage = "Resume File Name is required")]
         public string ResumeFileName { get; set; }
 
+        public string UniqueId { get; set; }
+
         public List<string> CertificationsFilesNames { get; set; }
     }
 }

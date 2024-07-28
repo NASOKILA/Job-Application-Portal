@@ -9,6 +9,8 @@ namespace JobApplicationPortal.Models
         [Required(ErrorMessage = "Name is required")]
         public string Name { get; set; }
 
+        public string UniqueId { get; set; }
+
         [Required(ErrorMessage = "Email is required")]
         public string Email { get; set; }
 

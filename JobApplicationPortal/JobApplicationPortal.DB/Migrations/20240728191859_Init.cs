@@ -20,6 +20,7 @@ namespace JobApplicationPortal.DB.Migrations
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Position = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ResumeFileName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UniqueId = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CertificationsFilesNames = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
