@@ -21,9 +21,9 @@ namespace JobApplicationPortal.Models.DbModels
         [Required(ErrorMessage = "Position is required")]
         public string Position { get; set; }
 
-        [Required(ErrorMessage = "ResumeFileUrl is required")]
-        public string ResumeFilePath { get; set; }
+        [Required(ErrorMessage = "Resume File Name is required")]
+        public string ResumeFileName { get; set; }
 
-        public List<string> CertificationsFilesPath { get; set; }
+        public List<string> CertificationsFilesNames { get; set; }
     }
 }

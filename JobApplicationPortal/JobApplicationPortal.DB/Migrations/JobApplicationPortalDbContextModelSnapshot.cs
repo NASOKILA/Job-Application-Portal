@@ -29,7 +29,7 @@ namespace JobApplicationPortal.DB.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("CertificationsFilesPath")
+                    b.Property<string>("CertificationsFilesNames")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -45,7 +45,7 @@ namespace JobApplicationPortal.DB.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ResumeFilePath")
+                    b.Property<string>("ResumeFileName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

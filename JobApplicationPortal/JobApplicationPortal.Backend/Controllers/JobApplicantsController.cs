@@ -36,7 +36,7 @@ namespace JobApplicationApi.Controllers
                     {
                         await model.Resume.CopyToAsync(stream);
                     }
-                    jobApplicant.ResumeFilePath = model.Resume.FileName;
+                    jobApplicant.ResumeFileName = model.Resume.FileName;
                 }
 
                 if (model.Certifications != null)
@@ -48,7 +48,7 @@ namespace JobApplicationApi.Controllers
                         {
                             await certification.CopyToAsync(stream);
                         }
-                        jobApplicant.CertificationsFilesPath.Add(certification.FileName);
+                        jobApplicant.CertificationsFilesNames.Add(certification.FileName);
                     }
                 }
 

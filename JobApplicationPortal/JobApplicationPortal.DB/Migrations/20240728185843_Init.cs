@@ -19,8 +19,8 @@ namespace JobApplicationPortal.DB.Migrations
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Position = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ResumeFilePath = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CertificationsFilesPath = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    ResumeFileName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CertificationsFilesNames = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {

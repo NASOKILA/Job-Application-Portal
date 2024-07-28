@@ -7,7 +7,7 @@ namespace JobApplicationPortal.Models.ViewModels
         public string Name { get; set; }
         public string Email { get; set; }
         public string Position { get; set; }
-        public string ResumeFilePath { get; set; }
-        public List<string> CertificationsFilesPath { get; set; }
+        public string ResumeFileName{ get; set; }
+        public List<string> CertificationsFilesNames { get; set; }
     }
 }

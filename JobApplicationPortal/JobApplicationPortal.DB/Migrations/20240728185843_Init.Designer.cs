@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace JobApplicationPortal.DB.Migrations
 {
     [DbContext(typeof(JobApplicationPortalDbContext))]
-    [Migration("20240728184455_Init")]
+    [Migration("20240728185843_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -32,7 +32,7 @@ namespace JobApplicationPortal.DB.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("CertificationsFilesPath")
+                    b.Property<string>("CertificationsFilesNames")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -48,7 +48,7 @@ namespace JobApplicationPortal.DB.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ResumeFilePath")
+                    b.Property<string>("ResumeFileName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

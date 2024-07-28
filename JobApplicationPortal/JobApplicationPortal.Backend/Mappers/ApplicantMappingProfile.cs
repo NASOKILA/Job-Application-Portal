@@ -13,8 +13,8 @@ namespace JobApplicationPortal.Backend.API.Mappers
             CreateMap<JobApplicantDto, JobApplicants>();
 
             CreateMap<JobApplicantModel, JobApplicants>()
-            .ForMember(dest => dest.ResumeFilePath, opt => opt.MapFrom(src => string.Empty))
-            .ForMember(dest => dest.CertificationsFilesPath, opt => opt.MapFrom(src => new List<string>()));
+            .ForMember(dest => dest.ResumeFileName, opt => opt.MapFrom(src => string.Empty))
+            .ForMember(dest => dest.CertificationsFilesNames, opt => opt.MapFrom(src => new List<string>()));
         }
     }
 }
