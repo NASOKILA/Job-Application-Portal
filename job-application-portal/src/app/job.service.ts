@@ -41,25 +41,25 @@ export class JobService {
 
   constructor(private http: HttpClient) { }
 
-  submitJobApplication(formData: FormData): Observable<any> {
-    // Mock submission handling (can be replaced with real HTTP call)
-    return of({ success: true, message: 'Application submitted successfully.' });
+   submitJobApplicant(formData: FormData): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/submitJobApplicant`, formData);
   }
 
-  getJobApplications(): Observable<any[]> {
+  // submitJobApplication(formData: FormData): Observable<any> {
+  //   // Mock submission handling (can be replaced with real HTTP call)
+  //   return of({ success: true, message: 'Application submitted successfully.' });
+  // }
+
+  getJobApplicants(): Observable<any[]> {
     return of(MOCK_JOBS); // Return mock data
   }
 
-  getJobApplication(id: string): Observable<any> {
+  getJobApplicant(id: string): Observable<any> {
     const job = MOCK_JOBS.find(job => job.id === id);
     return of(job); // Return single mock job application
   }
 
   // TO DO: UNCOMMENT THIS CODE AND CALL THE API !
-  // submitJobApplication(formData: FormData): Observable<any> {
-  //   return this.http.post<any>(`${this.apiUrl}/submit`, formData);
-  // }
-
   // getJobApplications(): Observable<any[]> {
   //   return this.http.get<any[]>(`${this.apiUrl}`);
   // }

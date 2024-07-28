@@ -56,7 +56,7 @@ export class JobFormComponent {
         formData.append(`certifications[${index}]`, file);
       });
 
-      this.jobService.submitJobApplication(formData).subscribe(response => {
+      this.jobService.submitJobApplicant(formData).subscribe(response => {
         console.log(response);
       });
 

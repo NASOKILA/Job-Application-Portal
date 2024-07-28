@@ -3,6 +3,7 @@ using JobApplicationPortal.DB;
 using JobApplicationPortal.Models;
 using JobApplicationPortal.Models.DbModels;
 using Microsoft.AspNetCore.Mvc;
+using System.IO.Compression;
 
 namespace JobApplicationApi.Controllers
 {
@@ -21,7 +22,7 @@ namespace JobApplicationApi.Controllers
             _mapper = mapper;
         }
 
-        [HttpPost("submit")]
+        [HttpPost("submitJobApplicant")]
         public async Task<IActionResult> SubmitJobApplication([FromForm] JobApplicantModel model)
         {
             if (ModelState.IsValid)
@@ -30,24 +31,24 @@ namespace JobApplicationApi.Controllers
                 
                 if (model.Resume != null)
                 {
-                    var resumePath = Path.Combine(_env.ContentRootPath, "Uploads", model.Resume.FileName);
+                    var resumePath = Path.Combine(_env.ContentRootPath, "Resumes", model.Resume.FileName);
                     using (var stream = new FileStream(resumePath, FileMode.Create))
                     {
                         await model.Resume.CopyToAsync(stream);
                     }
-                    jobApplicant.ResumeFilePath = resumePath;
+                    jobApplicant.ResumeFilePath = model.Resume.FileName;
                 }
 
                 if (model.Certifications != null)
                 {
                     foreach (var certification in model.Certifications)
                     {
-                        var certificationPath = Path.Combine(_env.ContentRootPath, "Uploads", certification.FileName);
+                        var certificationPath = Path.Combine(_env.ContentRootPath, "Certifications", certification.FileName);
                         using (var stream = new FileStream(certificationPath, FileMode.Create))
                         {
                             await certification.CopyToAsync(stream);
                         }
-                        jobApplicant.CertificationsFilesPath.Add(certificationPath);
+                        jobApplicant.CertificationsFilesPath.Add(certification.FileName);
                     }
                 }
 
@@ -61,15 +62,15 @@ namespace JobApplicationApi.Controllers
             return BadRequest(new { success = false, message = "Invalid data submitted." });
         }
 
-        [HttpGet("download")]
-        public async Task<IActionResult> DownloadFile([FromQuery] string filePath)
+        [HttpGet("downloadResume")]
+        public async Task<IActionResult> DownloadFile([FromQuery] string fileName)
         {
-            if (string.IsNullOrEmpty(filePath))
+            if (string.IsNullOrEmpty(fileName))
             {
                 return BadRequest(new { success = false, message = "File path is required." });
             }
 
-            var fullPath = Path.Combine(_env.ContentRootPath, filePath);
+            var fullPath = Path.Combine(_env.ContentRootPath, "Resumes/" + fileName);
 
             if (!System.IO.File.Exists(fullPath))
             {
@@ -84,9 +85,10 @@ namespace JobApplicationApi.Controllers
 
             memory.Position = 0;
 
-            var fileName = Path.GetFileName(fullPath);
+            var file = Path.GetFileName(fullPath);
 
-            return File(memory, "APPLICATION/octet-stream", fileName);
+            return File(memory, "APPLICATION/octet-stream", file);
         }
+
     }
 }
