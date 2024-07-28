@@ -9,6 +9,6 @@ namespace JobApplicationPortal.DB
             : base(options)
         {}
 
-        public DbSet<Applicant> Applicants { get; set; }
+        public DbSet<JobApplicant> JobApplicants { get; set; }
     }
 }

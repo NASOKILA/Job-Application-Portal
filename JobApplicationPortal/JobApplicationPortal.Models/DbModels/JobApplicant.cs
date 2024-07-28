@@ -6,8 +6,8 @@ using JobApplicationPortal.Models.Interfaces;
 namespace JobApplicationPortal.Models.DbModels
 {
     [ExcludeFromCodeCoverage]
-    [Table("Applicant")]
-    public class Applicant : IApplicant, IEntityBase
+    [Table("JobApplicant")]
+    public class JobApplicant : IJobApplicant, IEntityBase
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
@@ -22,8 +22,8 @@ namespace JobApplicationPortal.Models.DbModels
         public string Position { get; set; }
 
         [Required(ErrorMessage = "ResumeFileUrl is required")]
-        public string ResumeFileUrl { get; set; }
+        public string ResumeFilePath { get; set; }
 
-        public List<string> CertificationFilesUrls { get; set; }
+        public List<string> CertificationsFilesPath { get; set; }
     }
 }
