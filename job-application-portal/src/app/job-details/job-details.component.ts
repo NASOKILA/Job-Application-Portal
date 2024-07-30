@@ -22,8 +22,8 @@ export class JobDetailsComponent implements OnInit {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       this.jobService.getJobApplicant(id).subscribe(data => {
-        console.log("data", data);
         data.resumeUrl = `https://localhost:7183/api/JobApplicants/downloadResumeByApplicantId/${data.uniqueId}`;
+        data.certificationsUrl = `https://localhost:7183/api/JobApplicants/downloadCertificationsByApplicantId/${data.uniqueId}`;
         this.job = data;
       });
     }

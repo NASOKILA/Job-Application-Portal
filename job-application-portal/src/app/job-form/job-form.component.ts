@@ -52,8 +52,8 @@ export class JobFormComponent {
       formData.append('position', this.jobForm.get('position')?.value);
       formData.append('resume', this.selectedResume);
 
-      this.selectedCertifications.forEach((file, index) => {
-        formData.append(`certifications[${index}]`, file);
+      this.selectedCertifications.forEach((file) => {
+        formData.append(`certifications`, file);
       });
 
       this.jobService.submitJobApplicant(formData).subscribe(response => {

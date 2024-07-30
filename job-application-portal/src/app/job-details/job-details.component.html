@@ -6,7 +6,9 @@
       <div class="card-body">
         <h5 class="card-title">{{ job.position }}</h5>
         <p class="card-text"><strong>Email:</strong> {{ job.email }}</p>
-        <a [href]="job.resumeUrl" class="btn btn-primary" download>Download Resume</a>
+        <a [href]="job.resumeUrl" class="btn btn-primary" download>Download Resume</a> 
+        <span *ngIf="job.certificationsFilesNames && job.certificationsFilesNames.length > 0"> | </span>
+        <a *ngIf="job.certificationsFilesNames && job.certificationsFilesNames.length > 0" [href]="job.certificationsUrl" class="btn btn-primary" download>Download Certifications</a>
       </div>
     </div>
   </div>

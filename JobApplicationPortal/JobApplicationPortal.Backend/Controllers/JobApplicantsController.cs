@@ -65,6 +65,7 @@ namespace JobApplicationApi.Controllers
             return BadRequest(new { success = false, message = "Invalid data submitted." });
         }
 
+
         [HttpGet("downloadResumeByApplicantId/{uniqueId}")]
         public async Task<IActionResult> DownloadResume(string uniqueId)
         {
@@ -100,6 +101,51 @@ namespace JobApplicationApi.Controllers
             return File(memory, "APPLICATION/octet-stream", file);
         }
 
+
+        [HttpGet("downloadCertificationsByApplicantId/{uniqueId}")]
+        public async Task<IActionResult> DownloadCertifications(string uniqueId)
+        {
+            var jobApplicant = await _context.JobApplicants.FirstOrDefaultAsync(x => x.UniqueId == uniqueId);
+
+            if (jobApplicant == null)
+            {
+                return NotFound(new { success = false, message = "Job applicant not found." });
+            }
+
+            if (jobApplicant.CertificationsFilesNames.Count < 1)
+            {
+                return BadRequest(new { success = false, message = "No certifications found." });
+            }
+
+            var zipName = $"{jobApplicant.Name}_Certifications.zip";
+            var zipPath = Path.Combine(_env.ContentRootPath, "Certifications", zipName);
+
+            using (var archive = new ZipArchive(new FileStream(zipPath, FileMode.Create), ZipArchiveMode.Create))
+            {
+                foreach (var cert in jobApplicant.CertificationsFilesNames)
+                {
+                    var fullPath = Path.Combine(_env.ContentRootPath, "Certifications", cert);
+                    if (System.IO.File.Exists(fullPath))
+                    {
+                        archive.CreateEntryFromFile(fullPath, Path.GetFileName(fullPath).Split("_")[1]);
+                    }
+                }
+            }
+
+            var memory = new MemoryStream();
+            using (var stream = new FileStream(zipPath, FileMode.Open))
+            {
+                await stream.CopyToAsync(memory);
+            }
+
+            memory.Position = 0;
+
+            System.IO.File.Delete(zipPath);
+
+            return File(memory, "application/zip", zipName);
+        }
+
+
         [HttpGet("getAllJobApplicants")]
         public async Task<IActionResult> GetAllJobApplicants()
         {
@@ -109,6 +155,7 @@ namespace JobApplicationApi.Controllers
 
             return Ok(mappedJobApplicants);
         }
+
 
         [HttpGet("getJobApplicantById/{uniqueId}")]
         public async Task<IActionResult> GetJobApplicantById(string uniqueId)
