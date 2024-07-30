@@ -1,9 +1,8 @@
 ﻿using AutoMapper;
-using JobApplicationPortal.DB;
 using JobApplicationPortal.Models;
 using JobApplicationPortal.Models.DbModels;
+using JobApplicationPortal.Models.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System.IO.Compression;
 
 namespace JobApplicationApi.Controllers
@@ -12,13 +11,13 @@ namespace JobApplicationApi.Controllers
     [ApiController]
     public class JobApplicantsController : ControllerBase
     {
-        private readonly JobApplicationPortalDbContext _context;
+        private readonly IJobApplicantsRepository _repository;
         private readonly IWebHostEnvironment _env;
         private readonly IMapper _mapper;
 
-        public JobApplicantsController(JobApplicationPortalDbContext context, IWebHostEnvironment env, IMapper mapper)
+        public JobApplicantsController(IJobApplicantsRepository repository, IWebHostEnvironment env, IMapper mapper)
         {
-            _context = context;
+            _repository = repository;
             _env = env;
             _mapper = mapper;
         }
@@ -55,9 +54,9 @@ namespace JobApplicationApi.Controllers
                     }
                 }
 
-                _context.JobApplicants.Add(jobApplicant);
+                await _repository.AddJobApplicantAsync(jobApplicant);
 
-                await _context.SaveChangesAsync();
+                await _repository.SaveChangesAsync();
 
                 return Ok(new { success = true, message = "Application submitted successfully." });
             }
@@ -69,7 +68,7 @@ namespace JobApplicationApi.Controllers
         [HttpGet("downloadResumeByApplicantId/{uniqueId}")]
         public async Task<IActionResult> DownloadResume(string uniqueId)
         {
-            var jobApplicant = await _context.JobApplicants.FirstOrDefaultAsync(x => x.UniqueId == uniqueId);
+            var jobApplicant = await _repository.GetJobApplicantByUniqueIdAsync(uniqueId);
 
             if (jobApplicant == null)
             {
@@ -105,7 +104,7 @@ namespace JobApplicationApi.Controllers
         [HttpGet("downloadCertificationsByApplicantId/{uniqueId}")]
         public async Task<IActionResult> DownloadCertifications(string uniqueId)
         {
-            var jobApplicant = await _context.JobApplicants.FirstOrDefaultAsync(x => x.UniqueId == uniqueId);
+            var jobApplicant = await _repository.GetJobApplicantByUniqueIdAsync(uniqueId);
 
             if (jobApplicant == null)
             {
@@ -149,7 +148,7 @@ namespace JobApplicationApi.Controllers
         [HttpGet("getAllJobApplicants")]
         public async Task<IActionResult> GetAllJobApplicants()
         {
-            var jobApplicants = await _context.JobApplicants.ToListAsync();
+            var jobApplicants = await _repository.GetAllJobApplicantsAsync();
 
             var mappedJobApplicants = _mapper.Map<List<JobApplicants>>(jobApplicants);
 
@@ -160,7 +159,7 @@ namespace JobApplicationApi.Controllers
         [HttpGet("getJobApplicantById/{uniqueId}")]
         public async Task<IActionResult> GetJobApplicantById(string uniqueId)
         {
-            var jobApplicant = await _context.JobApplicants.FirstOrDefaultAsync(x => x.UniqueId == uniqueId);
+            var jobApplicant = await _repository.GetJobApplicantByUniqueIdAsync(uniqueId);
 
             if (jobApplicant == null)
             {

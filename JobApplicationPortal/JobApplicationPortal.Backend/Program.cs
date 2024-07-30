@@ -1,5 +1,7 @@
 using JobApplicationPortal.Backend.API.Mappers;
 using JobApplicationPortal.DB;
+using JobApplicationPortal.Models.Interfaces;
+using JobApplicationPortal.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -31,6 +33,8 @@ builder.Services.AddDbContext<JobApplicationPortalDbContext>(options =>
 builder.Services.AddScoped<DatabaseInitializer>();
 
 builder.Services.AddAutoMapper(typeof(ApplicantMappingProfile));
+
+builder.Services.AddScoped<IJobApplicantsRepository, JobApplicantsRepository>();
 
 var app = builder.Build();
 

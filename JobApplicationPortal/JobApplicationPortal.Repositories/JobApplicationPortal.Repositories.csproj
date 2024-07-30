@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\JobApplicationPortal.DB\JobApplicationPortal.DB.csproj" />
+    <ProjectReference Include="..\JobApplicationPortal.Models\JobApplicationPortal.Models.csproj" />
+  </ItemGroup>
+
 </Project>
