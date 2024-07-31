@@ -8,7 +8,7 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule, RouterModule],
   templateUrl: './job-list.component.html',
-  styleUrl: './job-list.component.css'
+  styleUrls: ['./job-list.component.css']
 })
 export class JobListComponent implements OnInit {
   jobs: any[] = [];
@@ -17,7 +17,11 @@ export class JobListComponent implements OnInit {
 
   ngOnInit(): void {
     this.jobService.getJobApplicants().subscribe(data => {
-      this.jobs = data;
+      this.jobs = data.map(job => ({
+        ...job,
+        resumeUrl: `https://localhost:7183/api/JobApplicants/downloadResumeByApplicantId/${job.uniqueId}`,
+        certificationsUrl: `https://localhost:7183/api/JobApplicants/downloadCertificationsByApplicantId/${job.uniqueId}`
+      }));
     });
   }
 }

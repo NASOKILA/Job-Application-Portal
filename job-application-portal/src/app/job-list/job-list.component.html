@@ -1,14 +1,35 @@
 <div class="container mt-5">
-    <h2>Job Applicants</h2>
-    <div class="list-group">
-      <div *ngFor="let job of jobs" class="list-group-item list-group-item-action flex-column align-items-start">
-        <div class="d-flex w-100 justify-content-between">
-          <h5 class="mb-1">{{ job.name }}</h5>
-          <small>{{ job.position }}</small>
-        </div>
-        <p class="mb-1">{{ job.email }}</p>
-        <small><a [routerLink]="['/jobs', job.uniqueId]" class="btn btn-primary">View Details</a></small>
-      </div>
-    </div>
-  </div>
-  
+  <h2>Job Applicants</h2>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Position</th>
+        <th>Resume</th>
+        <th>Certifications</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let job of jobs">
+        <td>{{ job.name }}</td>
+        <td>{{ job.email }}</td>
+        <td>{{ job.position }}</td>
+        <td>
+          <a [href]="job.resumeUrl" download>Download Resume</a>
+        </td>
+        <td>
+          <a *ngIf="job.certificationsFilesNames && job.certificationsFilesNames.length > 0"
+             [href]="job.certificationsUrl" download>Download Certifications</a>
+          <span *ngIf="!job.certificationsFilesNames || job.certificationsFilesNames.length === 0">
+            No Certifications
+          </span>
+        </td>
+        <td>
+          <a [routerLink]="['/jobs', job.uniqueId]" class="btn btn-primary">Details</a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
