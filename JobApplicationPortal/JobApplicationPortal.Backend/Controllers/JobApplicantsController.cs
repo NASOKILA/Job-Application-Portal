@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using JobApplicationPortal.Models;
 using JobApplicationPortal.Models.DbModels;
+using JobApplicationPortal.Models.DTOModels;
 using JobApplicationPortal.Models.Interfaces;
 using JobApplicationPortal.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
@@ -24,7 +24,7 @@ namespace JobApplicationApi.Controllers
         }
 
         [HttpPost("submit")]
-        public async Task<IActionResult> Submit([FromForm] JobApplicantModel model)
+        public async Task<IActionResult> Submit([FromForm] JobApplicantDto model)
         {
             if (ModelState.IsValid)
             {

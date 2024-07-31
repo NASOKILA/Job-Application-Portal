@@ -1,12 +1,22 @@
-﻿namespace JobApplicationPortal.Models.DTOModels
+﻿using Microsoft.AspNetCore.Http;
+using System.ComponentModel.DataAnnotations;
+
+namespace JobApplicationPortal.Models.DTOModels
 {
-    //A DTO ensures that the entity details (such as database annotations) do not leak into the API responses. 
     public class JobApplicantDto
     {
-        public int Id { get; set; }
-        public string UniqueId { get; set; }
+        [Required(ErrorMessage = "Name is required")]
         public string Name { get; set; }
+
+        [Required(ErrorMessage = "Email is required")]
         public string Email { get; set; }
-        public int Age { get; set; }
+
+        [Required(ErrorMessage = "Position is required")]
+        public string Position { get; set; }
+
+        [Required(ErrorMessage = "Resume is required")]
+        public IFormFile Resume { get; set; }
+
+        public List<IFormFile>? Certifications { get; set; }
     }
 }
