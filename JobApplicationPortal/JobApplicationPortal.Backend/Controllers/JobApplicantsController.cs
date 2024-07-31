@@ -12,13 +12,13 @@ namespace JobApplicationApi.Controllers
     public class JobApplicantsController : ControllerBase
     {
         private readonly IJobApplicantsRepository _repository;
-        private readonly IWebHostEnvironment _env;
+        private readonly IBlobService _blobService;
         private readonly IMapper _mapper;
 
-        public JobApplicantsController(IJobApplicantsRepository repository, IWebHostEnvironment env, IMapper mapper)
+        public JobApplicantsController(IJobApplicantsRepository repository, IBlobService blobService, IMapper mapper)
         {
             _repository = repository;
-            _env = env;
+            _blobService = blobService;
             _mapper = mapper;
         }
 
@@ -28,34 +28,28 @@ namespace JobApplicationApi.Controllers
             if (ModelState.IsValid)
             {
                 var jobApplicant = _mapper.Map<JobApplicants>(model);
-                
-                jobApplicant.UniqueId = Guid.NewGuid().ToString();
 
+                jobApplicant.UniqueId = Guid.NewGuid().ToString();
+                var containerName = jobApplicant.UniqueId;
                 if (model.Resume != null)
                 {
-                    var resumePath = Path.Combine(_env.ContentRootPath, "Resumes", $"{jobApplicant.UniqueId}_{model.Resume.FileName}");
-                    using (var stream = new FileStream(resumePath, FileMode.Create))
-                    {
-                        await model.Resume.CopyToAsync(stream);
-                    }
-                    jobApplicant.ResumeFileName = $"{jobApplicant.UniqueId}_{model.Resume.FileName}";
+                    var resumeFileName = $"Resumes/{model.Resume.FileName}";
+                    await _blobService.UploadFileBlobAsync(model.Resume, containerName, resumeFileName);
+                    jobApplicant.ResumeFileName = model.Resume.FileName;
                 }
 
                 if (model.Certifications != null)
                 {
+                    jobApplicant.CertificationsFilesNames = new List<string>();
                     foreach (var certification in model.Certifications)
                     {
-                        var certificationPath = Path.Combine(_env.ContentRootPath, "Certifications", $"{jobApplicant.UniqueId}_{certification.FileName}");
-                        using (var stream = new FileStream(certificationPath, FileMode.Create))
-                        {
-                            await certification.CopyToAsync(stream);
-                        }
-                        jobApplicant.CertificationsFilesNames.Add($"{jobApplicant.UniqueId}_{certification.FileName}");
+                        var resumeFileName = $"Certifications/{certification.FileName}";
+                        await _blobService.UploadFileBlobAsync(certification, containerName, resumeFileName);
+                        jobApplicant.CertificationsFilesNames.Add(certification.FileName);
                     }
                 }
 
                 await _repository.AddJobApplicantAsync(jobApplicant);
-
                 await _repository.SaveChangesAsync();
 
                 return Ok(new { success = true, message = "Application submitted successfully." });
@@ -63,7 +57,6 @@ namespace JobApplicationApi.Controllers
 
             return BadRequest(new { success = false, message = "Invalid data submitted." });
         }
-
 
         [HttpGet("downloadResumeByApplicantId/{uniqueId}")]
         public async Task<IActionResult> DownloadResume(string uniqueId)
@@ -80,26 +73,16 @@ namespace JobApplicationApi.Controllers
                 return BadRequest(new { success = false, message = "File path is required." });
             }
 
-            var fullPath = Path.Combine(_env.ContentRootPath, "Resumes/" + jobApplicant.ResumeFileName);
+            var relativePath = $"Resumes/{jobApplicant.ResumeFileName}";
+            var fileData = await _blobService.DownloadFileBlobAsync(uniqueId, relativePath);
 
-            if (!System.IO.File.Exists(fullPath))
+            if (fileData == null)
             {
                 return NotFound(new { success = false, message = "File not found." });
             }
 
-            var memory = new MemoryStream();
-            using (var stream = new FileStream(fullPath, FileMode.Open, FileAccess.Read))
-            {
-                await stream.CopyToAsync(memory);
-            }
-
-            memory.Position = 0;
-
-            var file = Path.GetFileName(fullPath).Split("_")[1];
-
-            return File(memory, "APPLICATION/octet-stream", file);
+            return File(fileData, "application/octet-stream", jobApplicant.ResumeFileName);
         }
-
 
         [HttpGet("downloadCertificationsByApplicantId/{uniqueId}")]
         public async Task<IActionResult> DownloadCertifications(string uniqueId)
@@ -117,16 +100,22 @@ namespace JobApplicationApi.Controllers
             }
 
             var zipName = $"{jobApplicant.Name}_Certifications.zip";
-            var zipPath = Path.Combine(_env.ContentRootPath, "Certifications", zipName);
+            var zipPath = Path.Combine(Path.GetTempPath(), zipName);
 
             using (var archive = new ZipArchive(new FileStream(zipPath, FileMode.Create), ZipArchiveMode.Create))
             {
                 foreach (var cert in jobApplicant.CertificationsFilesNames)
                 {
-                    var fullPath = Path.Combine(_env.ContentRootPath, "Certifications", cert);
-                    if (System.IO.File.Exists(fullPath))
+                    var relativePath = $"Certifications/{cert}";
+
+                    var fileData = await _blobService.DownloadFileBlobAsync(uniqueId, relativePath);
+                    if (fileData != null)
                     {
-                        archive.CreateEntryFromFile(fullPath, Path.GetFileName(fullPath).Split("_")[1]);
+                        var entry = archive.CreateEntry(cert);
+                        using (var entryStream = entry.Open())
+                        {
+                            await entryStream.WriteAsync(fileData, 0, fileData.Length);
+                        }
                     }
                 }
             }
@@ -138,12 +127,10 @@ namespace JobApplicationApi.Controllers
             }
 
             memory.Position = 0;
-
             System.IO.File.Delete(zipPath);
 
             return File(memory, "application/zip", zipName);
         }
-
 
         [HttpGet("getAllJobApplicants")]
         public async Task<IActionResult> GetAllJobApplicants()
@@ -154,7 +141,6 @@ namespace JobApplicationApi.Controllers
 
             return Ok(mappedJobApplicants);
         }
-
 
         [HttpGet("getJobApplicantById/{uniqueId}")]
         public async Task<IActionResult> GetJobApplicantById(string uniqueId)
