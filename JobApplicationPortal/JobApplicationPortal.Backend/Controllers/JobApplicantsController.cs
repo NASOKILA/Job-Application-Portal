@@ -2,6 +2,7 @@
 using JobApplicationPortal.Models;
 using JobApplicationPortal.Models.DbModels;
 using JobApplicationPortal.Models.Interfaces;
+using JobApplicationPortal.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System.IO.Compression;
 
@@ -137,9 +138,7 @@ namespace JobApplicationApi.Controllers
         {
             var jobApplicants = await _repository.GetAllJobApplicantsAsync();
 
-            var mappedJobApplicants = _mapper.Map<List<JobApplicants>>(jobApplicants);
-
-            return Ok(mappedJobApplicants);
+            return Ok(_mapper.Map<List<JobApplicantViewModel>>(jobApplicants));
         }
 
         [HttpGet("getJobApplicantById/{uniqueId}")]
@@ -152,7 +151,7 @@ namespace JobApplicationApi.Controllers
                 return NotFound(new { success = false, message = "Job applicant not found." });
             }
 
-            return Ok(jobApplicant);
+            return Ok(_mapper.Map<JobApplicantViewModel>(jobApplicant));
         }
     }
 }

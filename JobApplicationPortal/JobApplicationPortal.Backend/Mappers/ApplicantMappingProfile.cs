@@ -2,6 +2,7 @@
 using JobApplicationPortal.Models;
 using JobApplicationPortal.Models.DbModels;
 using JobApplicationPortal.Models.DTOModels;
+using JobApplicationPortal.Models.ViewModels;
 
 namespace JobApplicationPortal.Backend.API.Mappers
 {
@@ -19,6 +20,9 @@ namespace JobApplicationPortal.Backend.API.Mappers
             CreateMap<JobApplicants, JobApplicantModel>()
             .ForMember(dest => dest.Resume, opt => opt.MapFrom(src => string.Empty))
             .ForMember(dest => dest.Certifications, opt => opt.MapFrom(src => new List<string>()));
+
+            CreateMap<JobApplicants, JobApplicantViewModel>();
+
         }
     }
 }
