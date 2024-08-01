@@ -3,16 +3,17 @@
   <div class="row mb-3">
     <div class="col-md-6">
       <label for="name" class="form-label">Name *</label>
-      <input id="name" formControlName="name" class="form-control" required>
+      <input id="name" formControlName="name" class="form-control" [ngClass]="{'is-invalid': jobForm.get('name')?.invalid && jobForm.get('name')?.touched}">
       <div class="invalid-feedback" *ngIf="jobForm.get('name')?.invalid && jobForm.get('name')?.touched">
-        Name is required
+        <div *ngIf="jobForm.get('name')?.errors?.required">Name is required</div>
       </div>
     </div>
     <div class="col-md-6">
       <label for="email" class="form-label">Email *</label>
-      <input id="email" formControlName="email" class="form-control" required>
+      <input id="email" formControlName="email" class="form-control" [ngClass]="{'is-invalid': jobForm.get('email')?.invalid && jobForm.get('email')?.touched}">
       <div class="invalid-feedback" *ngIf="jobForm.get('email')?.invalid && jobForm.get('email')?.touched">
-        Valid email is required
+        <div *ngIf="jobForm.get('email')?.errors?.required">Email is required</div>
+        <div *ngIf="jobForm.get('email')?.errors?.email">Please enter a valid email</div>
       </div>
     </div>
   </div>
@@ -20,16 +21,16 @@
   <div class="row mb-3">
     <div class="col-md-6">
       <label for="position" class="form-label">Position *</label>
-      <input id="position" formControlName="position" class="form-control" required>
+      <input id="position" formControlName="position" class="form-control" [ngClass]="{'is-invalid': jobForm.get('position')?.invalid && jobForm.get('position')?.touched}">
       <div class="invalid-feedback" *ngIf="jobForm.get('position')?.invalid && jobForm.get('position')?.touched">
-        Position is required
+        <div *ngIf="jobForm.get('position')?.errors?.required">Position is required</div>
       </div>
     </div>
     <div class="col-md-6">
       <label for="resume" class="form-label">Resume *</label>
-      <input type="file" id="resume" (change)="onResumeFileChange($event)" class="form-control" required>
+      <input type="file" id="resume" (change)="onResumeFileChange($event)" class="form-control" [ngClass]="{'is-invalid': jobForm.get('resume')?.invalid && jobForm.get('resume')?.touched}">
       <div class="invalid-feedback" *ngIf="jobForm.get('resume')?.invalid && jobForm.get('resume')?.touched">
-        Resume is required
+        <div *ngIf="jobForm.get('resume')?.errors?.required">Resume is required</div>
       </div>
     </div>
   </div>
@@ -43,7 +44,7 @@
 
   <div class="row">
     <div class="col-md-12">
-      <button type="submit" class="btn btn-primary btn-block" [disabled]="jobForm.invalid">Submit</button>
+      <button type="submit" class="btn btn-primary btn-block" [disabled]="jobForm.invalid" [ngClass]="{'disabled-btn': jobForm.invalid}">Submit</button>
     </div>
   </div>
 </form>

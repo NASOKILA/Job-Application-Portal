@@ -1,4 +1,5 @@
-.container {
+  
+  .container {
     max-width: 800px;
   }
   
@@ -13,5 +14,9 @@
   
   .btn-block {
     width: 100%;
+  }
+  
+  button:disabled {
+    cursor: not-allowed;
   }
   
