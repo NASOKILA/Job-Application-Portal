@@ -1,29 +1,32 @@
 .container {
-    max-width: 600px;
-    margin: 0 auto;
-  }
-  
-  .card {
-    margin-top: 1rem;
-    border: 1px solid #dee2e6;
-    border-radius: 0.25rem;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
-  
-  .card-header {
-    background-color: #f8f9fa;
-    border-bottom: 1px solid #dee2e6;
-  }
-  
-  .card-title {
-    margin-bottom: 1rem;
-  }
-  
-  .card-text {
-    margin-bottom: 1rem;
-  }
-  
-  .btn {
-    display: inline-block;
-  }
-  
+  max-width: 800px;
+}
+
+.card-header {
+  background-color: #007bff;
+  color: white;
+}
+
+.card-header h2 {
+  margin: 0;
+}
+
+.card-body {
+  padding: 20px;
+}
+
+.card-title {
+  margin-bottom: 20px;
+}
+
+.card-text {
+  margin-bottom: 20px;
+}
+
+.btn-group .btn {
+  margin-right: 10px;
+}
+
+.btn-group .btn:last-child {
+  margin-right: 0;
+}

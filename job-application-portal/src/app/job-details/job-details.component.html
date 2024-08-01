@@ -1,15 +1,16 @@
 <div class="container mt-5" *ngIf="job">
-    <div class="card">
-      <div class="card-header">
-        <h2>{{ job.name }}</h2>
-      </div>
-      <div class="card-body">
-        <h5 class="card-title">{{ job.position }}</h5>
-        <p class="card-text"><strong>Email:</strong> {{ job.email }}</p>
-        <a [href]="job.resumeUrl" class="btn btn-primary" download>Download Resume</a> 
-        <span *ngIf="job.certificationsFilesNames && job.certificationsFilesNames.length > 0"> | </span>
-        <a *ngIf="job.certificationsFilesNames && job.certificationsFilesNames.length > 0" [href]="job.certificationsUrl" class="btn btn-primary" download>Download Certifications</a>
+  <div class="card">
+    <div class="card-header bg-primary text-white">
+      <h2>{{ job.name }}</h2>
+    </div>
+    <div class="card-body">
+      <h5 class="card-title">{{ job.position }}</h5>
+      <p class="card-text"><strong>Email:</strong> {{ job.email }}</p>
+      <div class="btn-group" role="group" aria-label="Resume and Certifications">
+        <a [href]="job.resumeUrl" class="btn btn-primary" download>Download Resume</a>
+        <a *ngIf="job.certificationsFilesNames && job.certificationsFilesNames.length > 0"
+           [href]="job.certificationsUrl" class="btn btn-secondary" download>Download Certifications</a>
       </div>
     </div>
   </div>
-  
+</div>
