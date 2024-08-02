@@ -57,7 +57,6 @@ export class JobFormComponent {
       });
 
       this.jobService.submitJobApplicant(formData).subscribe(response => {
-        console.log(response);
         this.router.navigate(['/jobs']);
       });
 
