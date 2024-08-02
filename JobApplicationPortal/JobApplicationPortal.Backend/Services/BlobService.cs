@@ -9,6 +9,11 @@ namespace JobApplicationPortal.Services
     {
         private readonly BlobServiceClient _blobServiceClient;
 
+        public BlobService(BlobServiceClient blobServiceClient)
+        {
+            _blobServiceClient = blobServiceClient;
+        }
+
         public BlobService(IConfiguration configuration)
         {
             _blobServiceClient = new BlobServiceClient(configuration.GetConnectionString("AzureBlobStorage"));
