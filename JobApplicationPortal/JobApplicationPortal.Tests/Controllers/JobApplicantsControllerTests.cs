@@ -9,6 +9,7 @@ using JobApplicationPortal.Models.Interfaces;
 using JobApplicationPortal.Models.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using NSubstitute;
 using NUnit.Framework;
 using System.IO.Compression;
@@ -20,6 +21,7 @@ namespace JobApplicationPortal.Tests.Controllers
         private IJobApplicantsRepository _repository;
         private IBlobService _blobService;
         private IMapper _mapper;
+        private ILogger<JobApplicantsController> _logger;
         private IValidator<JobApplicantDto> _validator;
         private JobApplicantsController _controller;
 
@@ -29,13 +31,15 @@ namespace JobApplicationPortal.Tests.Controllers
             _repository = Substitute.For<IJobApplicantsRepository>();
             _blobService = Substitute.For<IBlobService>();
             _mapper = Substitute.For<IMapper>();
+            _logger = Substitute.For<ILogger<JobApplicantsController>>();
             _validator = Substitute.For<IValidator<JobApplicantDto>>();
 
             _controller = new JobApplicantsController(
                 _repository,
                 _blobService,
                 _mapper,
-                _validator
+                _validator,
+                _logger
             );
         }
 
