@@ -25,7 +25,6 @@ namespace JobApplicationPortal.Services
                 await blobClient.UploadAsync(stream, new BlobHttpHeaders { ContentType = file.ContentType });
             }
 
-            // Generate SAS token for the blob
             var sasUri = GenerateSasUri(blobClient);
 
             return sasUri.ToString();

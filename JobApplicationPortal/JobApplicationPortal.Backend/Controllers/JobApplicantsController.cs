@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using FluentValidation;
+using JobApplicationPortal.Backend.Responses;
 using JobApplicationPortal.Models.DbModels;
 using JobApplicationPortal.Models.DTOModels;
 using JobApplicationPortal.Models.Interfaces;
@@ -33,9 +34,13 @@ namespace JobApplicationApi.Controllers
             
             if (!result.IsValid)
             {
-                var errors = result.Errors.Select(e => new { e.PropertyName, e.ErrorMessage });
+                var errors = result.Errors.Select(e => new ValidationError
+                {
+                    PropertyName = e.PropertyName,
+                    ErrorMessage = e.ErrorMessage
+                }).ToList();
 
-                return BadRequest(new { success = false, message = "Validation errors occurred.", errors });
+                return BadRequest(new JobApplicationResponse() { Success = false, Message = "Validation errors occurred.", Errors = errors });
             }
 
             var jobApplicant = _mapper.Map<JobApplicants>(model);
@@ -63,7 +68,7 @@ namespace JobApplicationApi.Controllers
             await _repository.AddJobApplicantAsync(jobApplicant);
             await _repository.SaveChangesAsync();
 
-            return Ok(new { success = true, message = "Application submitted successfully." });
+            return Ok(new JobApplicationResponse() { Success = true, Message = "Application submitted successfully." });
 
         }
 
