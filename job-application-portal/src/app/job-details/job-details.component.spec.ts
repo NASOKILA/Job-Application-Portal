@@ -39,7 +39,7 @@ describe('JobDetailsComponent', () => {
     jobService = TestBed.inject(JobService);
     route = TestBed.inject(ActivatedRoute);
 
-    // Mocking the jobservice methd
+    
     spyOn(jobService, 'getJobApplicant').and.returnValue(of({
       uniqueId: '1',
       name: 'Nasko Kambitov',
