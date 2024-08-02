@@ -9,19 +9,15 @@ namespace JobApplicationPortal.Backend.API.Mappers
     {
         public ApplicantMappingProfile()
         {
-            CreateMap<JobApplicants, JobApplicantDto>();
+            CreateMap<JobApplicants, JobApplicantDto>()
+            .ForMember(dest => dest.Resume, opt => opt.Ignore())
+            .ForMember(dest => dest.Certifications, opt => opt.Ignore());
 
             CreateMap<JobApplicantDto, JobApplicants>()
             .ForMember(dest => dest.ResumeFileName, opt => opt.MapFrom(src => string.Empty))
             .ForMember(dest => dest.CertificationsFilesNames, opt => opt.MapFrom(src => new List<string>()));
 
-
-            CreateMap<JobApplicants, JobApplicantDto>()
-            .ForMember(dest => dest.Resume, opt => opt.MapFrom(src => string.Empty))
-            .ForMember(dest => dest.Certifications, opt => opt.MapFrom(src => new List<string>()));
-
             CreateMap<JobApplicants, JobApplicantViewModel>();
-
         }
     }
 }
