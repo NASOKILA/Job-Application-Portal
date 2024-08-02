@@ -79,12 +79,12 @@ namespace JobApplicationApi.Controllers
 
             if (jobApplicant == null)
             {
-                return NotFound(new { success = false, message = "Job applicant not found." });
+                return NotFound(new JobApplicationResponse() { Success = false, Message = "Job applicant not found." });
             }
 
             if (string.IsNullOrEmpty(jobApplicant.ResumeFileName))
             {
-                return BadRequest(new { success = false, message = "File path is required." });
+                return BadRequest(new JobApplicationResponse() { Success = false, Message = "File path is required." });
             }
 
             var relativePath = $"Resumes/{jobApplicant.ResumeFileName}";
@@ -92,7 +92,7 @@ namespace JobApplicationApi.Controllers
 
             if (fileData == null)
             {
-                return NotFound(new { success = false, message = "File not found." });
+                return NotFound(new JobApplicationResponse() { Success = false, Message = "File not found." });
             }
 
             return File(fileData, "application/octet-stream", jobApplicant.ResumeFileName);
@@ -105,12 +105,12 @@ namespace JobApplicationApi.Controllers
 
             if (jobApplicant == null)
             {
-                return NotFound(new { success = false, message = "Job applicant not found." });
+                return NotFound(new JobApplicationResponse() { Success = false, Message = "Job applicant not found." });
             }
 
             if (jobApplicant.CertificationsFilesNames.Count < 1)
             {
-                return BadRequest(new { success = false, message = "No certifications found." });
+                return BadRequest(new JobApplicationResponse() { Success = false, Message = "No certifications found." });
             }
 
             var zipName = $"{jobApplicant.Name}_Certifications.zip";
@@ -161,7 +161,7 @@ namespace JobApplicationApi.Controllers
 
             if (jobApplicant == null)
             {
-                return NotFound(new { success = false, message = "Job applicant not found." });
+                return NotFound(new JobApplicationResponse() { Success = false, Message = "Job applicant not found." });
             }
 
             return Ok(_mapper.Map<JobApplicantViewModel>(jobApplicant));
