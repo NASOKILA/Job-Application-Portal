@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using FluentValidation;
 using JobApplicationPortal.Models.DbModels;
 using JobApplicationPortal.Models.DTOModels;
 using JobApplicationPortal.Models.Interfaces;
@@ -15,9 +16,11 @@ namespace JobApplicationApi.Controllers
         private readonly IJobApplicantsRepository _repository;
         private readonly IBlobService _blobService;
         private readonly IMapper _mapper;
+        private readonly IValidator<JobApplicantDto> _validator;
 
-        public JobApplicantsController(IJobApplicantsRepository repository, IBlobService blobService, IMapper mapper)
+        public JobApplicantsController(IJobApplicantsRepository repository, IBlobService blobService, IMapper mapper, IValidator<JobApplicantDto> validator)
         {
+            _validator = validator;
             _repository = repository;
             _blobService = blobService;
             _mapper = mapper;
@@ -26,37 +29,42 @@ namespace JobApplicationApi.Controllers
         [HttpPost("submit")]
         public async Task<IActionResult> Submit([FromForm] JobApplicantDto model)
         {
-            if (ModelState.IsValid)
+            var result = await _validator.ValidateAsync(model);
+            
+            if (!result.IsValid)
             {
-                var jobApplicant = _mapper.Map<JobApplicants>(model);
+                var errors = result.Errors.Select(e => new { e.PropertyName, e.ErrorMessage });
 
-                jobApplicant.UniqueId = Guid.NewGuid().ToString();
-                var containerName = jobApplicant.UniqueId;
-                if (model.Resume != null)
-                {
-                    var resumeFileName = $"Resumes/{model.Resume.FileName}";
-                    await _blobService.UploadFileBlobAsync(model.Resume, containerName, resumeFileName);
-                    jobApplicant.ResumeFileName = model.Resume.FileName;
-                }
-
-                if (model.Certifications != null)
-                {
-                    jobApplicant.CertificationsFilesNames = new List<string>();
-                    foreach (var certification in model.Certifications)
-                    {
-                        var resumeFileName = $"Certifications/{certification.FileName}";
-                        await _blobService.UploadFileBlobAsync(certification, containerName, resumeFileName);
-                        jobApplicant.CertificationsFilesNames.Add(certification.FileName);
-                    }
-                }
-
-                await _repository.AddJobApplicantAsync(jobApplicant);
-                await _repository.SaveChangesAsync();
-
-                return Ok(new { success = true, message = "Application submitted successfully." });
+                return BadRequest(new { success = false, message = "Validation errors occurred.", errors });
             }
 
-            return BadRequest(new { success = false, message = "Invalid data submitted." });
+            var jobApplicant = _mapper.Map<JobApplicants>(model);
+
+            jobApplicant.UniqueId = Guid.NewGuid().ToString();
+            var containerName = jobApplicant.UniqueId;
+            if (model.Resume != null)
+            {
+                var resumeFileName = $"Resumes/{model.Resume.FileName}";
+                await _blobService.UploadFileBlobAsync(model.Resume, containerName, resumeFileName);
+                jobApplicant.ResumeFileName = model.Resume.FileName;
+            }
+
+            if (model.Certifications != null)
+            {
+                jobApplicant.CertificationsFilesNames = new List<string>();
+                foreach (var certification in model.Certifications)
+                {
+                    var resumeFileName = $"Certifications/{certification.FileName}";
+                    await _blobService.UploadFileBlobAsync(certification, containerName, resumeFileName);
+                    jobApplicant.CertificationsFilesNames.Add(certification.FileName);
+                }
+            }
+
+            await _repository.AddJobApplicantAsync(jobApplicant);
+            await _repository.SaveChangesAsync();
+
+            return Ok(new { success = true, message = "Application submitted successfully." });
+
         }
 
         [HttpGet("downloadResumeByApplicantId/{uniqueId}")]

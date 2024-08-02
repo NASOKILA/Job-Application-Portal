@@ -1,3 +1,4 @@
+using FluentValidation;
 using JobApplicationPortal.Backend.API.Mappers;
 using JobApplicationPortal.DB;
 using JobApplicationPortal.Models.Interfaces;
@@ -12,6 +13,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddValidatorsFromAssemblyContaining<JobApplicantDtoValidator>();
 
 string dbConnectionString = builder.Configuration.GetConnectionString("Database");
 
