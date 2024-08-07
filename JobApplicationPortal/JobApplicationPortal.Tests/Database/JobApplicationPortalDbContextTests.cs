@@ -34,8 +34,8 @@ namespace JobApplicationPortal.Tests.Database
         {
             var jobApplicants = new[]
             {
-                new JobApplicants { Id = 1, UniqueId = "1", Name = "John Jones", Email = "john.jones@example.com", Position = "Developer", CertificationsFilesNames = new List<string>(), ResumeFileName = "MyResume1.pdf" },
-                new JobApplicants { Id = 2, UniqueId = "2", Name = "Jane Smith", Email = "jane.smith@example.com", Position = "Designer", CertificationsFilesNames = new List<string>(), ResumeFileName = "MyResume2.pdf" }
+                new JobApplicants { Id = new Guid("c96aaa2b-faeb-488e-ad3c-67739017fd22"), Name = "John Jones", Email = "john.jones@example.com", Position = "Developer", CertificationsFilesNames = new List<string>(), ResumeFileName = "MyResume1.pdf" },
+                new JobApplicants { Id = new Guid("4593bd86-6762-41ee-97a0-2418c56d04ee"), Name = "Jane Smith", Email = "jane.smith@example.com", Position = "Designer", CertificationsFilesNames = new List<string>(), ResumeFileName = "MyResume2.pdf" }
             };
 
             _context.JobApplicants.AddRange(jobApplicants);
@@ -46,7 +46,7 @@ namespace JobApplicationPortal.Tests.Database
         public async Task CanAddJobApplicant()
         {
             // Arrange
-            var jobApplicant = new JobApplicants { Id = 3, UniqueId = "3", Name = "Jack Sparrow", Email = "jack.sparrow@example.com", Position = "Manager", CertificationsFilesNames = new List<string>(), ResumeFileName = "MyResume3.pdf" };
+            var jobApplicant = new JobApplicants { Id = new Guid("4593bd86-6762-41ee-97a0-2418c56d04ee"), Name = "Jack Sparrow", Email = "jack.sparrow@example.com", Position = "Manager", CertificationsFilesNames = new List<string>(), ResumeFileName = "MyResume3.pdf" };
 
             // Act
             _context.JobApplicants.Add(jobApplicant);

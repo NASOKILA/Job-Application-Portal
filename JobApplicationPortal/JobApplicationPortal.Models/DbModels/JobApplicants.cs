@@ -10,7 +10,7 @@ namespace JobApplicationPortal.Models.DbModels
     public class JobApplicants : IJobApplicant, IEntityBase
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
         [Required(ErrorMessage = "Name is required")]
         public string Name { get; set; }
@@ -23,8 +23,6 @@ namespace JobApplicationPortal.Models.DbModels
 
         [Required(ErrorMessage = "Resume File Name is required")]
         public string ResumeFileName { get; set; }
-
-        public string UniqueId { get; set; }
 
         public List<string> CertificationsFilesNames { get; set; }
     }

@@ -9,8 +9,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JobApplicationPortal.DB", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JobApplicationPortal.Models", "JobApplicationPortal.Models\JobApplicationPortal.Models.csproj", "{8C743B30-DB07-4372-A287-D560A05275F5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JobApplicationPortal.Repositories", "JobApplicationPortal.Repositories\JobApplicationPortal.Repositories.csproj", "{F5193731-08B4-435C-A353-2D24D0449E81}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JobApplicationPortal.Tests", "JobApplicationPortal.Tests\JobApplicationPortal.Tests.csproj", "{442D57A0-6D60-4711-A778-8FBDE45F1E85}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{73E96DC8-F3B5-4B4E-AEF6-95789AAF4957}"
@@ -36,10 +34,6 @@ Global
 		{8C743B30-DB07-4372-A287-D560A05275F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8C743B30-DB07-4372-A287-D560A05275F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8C743B30-DB07-4372-A287-D560A05275F5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F5193731-08B4-435C-A353-2D24D0449E81}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F5193731-08B4-435C-A353-2D24D0449E81}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F5193731-08B4-435C-A353-2D24D0449E81}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F5193731-08B4-435C-A353-2D24D0449E81}.Release|Any CPU.Build.0 = Release|Any CPU
 		{442D57A0-6D60-4711-A778-8FBDE45F1E85}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{442D57A0-6D60-4711-A778-8FBDE45F1E85}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{442D57A0-6D60-4711-A778-8FBDE45F1E85}.Release|Any CPU.ActiveCfg = Release|Any CPU

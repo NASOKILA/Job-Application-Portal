@@ -23,7 +23,6 @@
   <ItemGroup>
     <ProjectReference Include="..\JobApplicationPortal.Backend\JobApplicationPortal.Backend.csproj" />
     <ProjectReference Include="..\JobApplicationPortal.Models\JobApplicationPortal.Models.csproj" />
-    <ProjectReference Include="..\JobApplicationPortal.Repositories\JobApplicationPortal.Repositories.csproj" />
   </ItemGroup>
 
 </Project>

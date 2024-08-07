@@ -1,11 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace JobApplicationPortal.DB.Migrations
 {
     /// <inheritdoc />
-    public partial class Init : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -14,13 +15,11 @@ namespace JobApplicationPortal.DB.Migrations
                 name: "JobApplicants",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Position = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ResumeFileName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    UniqueId = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CertificationsFilesNames = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>

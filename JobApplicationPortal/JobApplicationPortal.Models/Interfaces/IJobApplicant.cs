@@ -2,7 +2,7 @@
 {
     public interface IJobApplicant
     {
-        int Id { get; set; }
+        Guid Id { get; set; }
         string Name { get; set; }
         string Email { get; set; }
         string Position { get; set; }

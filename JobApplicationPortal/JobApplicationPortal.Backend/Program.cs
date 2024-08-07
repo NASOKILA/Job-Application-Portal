@@ -2,7 +2,6 @@ using FluentValidation;
 using JobApplicationPortal.Backend.API.Mappers;
 using JobApplicationPortal.DB;
 using JobApplicationPortal.Models.Interfaces;
-using JobApplicationPortal.Repositories;
 using JobApplicationPortal.Services;
 using Microsoft.EntityFrameworkCore;
 
@@ -37,8 +36,6 @@ builder.Services.AddScoped<DatabaseInitializer>();
 builder.Services.AddScoped<IBlobService, BlobService>();
 
 builder.Services.AddAutoMapper(typeof(ApplicantMappingProfile));
-
-builder.Services.AddScoped<IJobApplicantsRepository, JobApplicantsRepository>();
 
 var app = builder.Build();
 

@@ -29,7 +29,7 @@ namespace JobApplicationPortal.Tests.Mappers
             // Arrange
             var jobApplicant = new JobApplicants
             {
-                UniqueId = "1",
+                Id = new Guid("1f65ebc8-e773-43a9-b336-282dec4cde25"),
                 Name = "John Wick",
                 Email = "john.wick@example.com",
                 Position = "Developer",
@@ -76,7 +76,7 @@ namespace JobApplicationPortal.Tests.Mappers
             // Arrange
             var jobApplicant = new JobApplicants
             {
-                UniqueId = "1",
+                Id = new Guid("1f65ebc8-e773-43a9-b336-282dec4cde25"),
                 Name = "John Wick",
                 Email = "john.wick@example.com",
                 Position = "Developer"
@@ -86,7 +86,7 @@ namespace JobApplicationPortal.Tests.Mappers
             var result = _mapper.Map<JobApplicantViewModel>(jobApplicant);
 
             // Assert
-            Assert.AreEqual(jobApplicant.UniqueId, result.UniqueId);
+            Assert.AreEqual(jobApplicant.Id, result.Id);
             Assert.AreEqual(jobApplicant.Name, result.Name);
             Assert.AreEqual(jobApplicant.Email, result.Email);
             Assert.AreEqual(jobApplicant.Position, result.Position);
@@ -98,7 +98,7 @@ namespace JobApplicationPortal.Tests.Mappers
             // Arrange
             var jobApplicant = new JobApplicants
             {
-                UniqueId = "1",
+                Id = new Guid("1f65ebc8-e773-43a9-b336-282dec4cde25"),
                 Name = "John Jones",
                 Email = "john.jones@example.com",
                 Position = "Designer",

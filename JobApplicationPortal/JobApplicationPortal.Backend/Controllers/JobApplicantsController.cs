@@ -1,11 +1,13 @@
 ﻿using AutoMapper;
 using FluentValidation;
 using JobApplicationPortal.Backend.Responses;
+using JobApplicationPortal.DB;
 using JobApplicationPortal.Models.DbModels;
 using JobApplicationPortal.Models.DTOModels;
 using JobApplicationPortal.Models.Interfaces;
 using JobApplicationPortal.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.IO.Compression;
 
 namespace JobApplicationApi.Controllers
@@ -14,16 +16,16 @@ namespace JobApplicationApi.Controllers
     [ApiController]
     public class JobApplicantsController : ControllerBase
     {
-        private readonly IJobApplicantsRepository _repository;
+        private readonly JobApplicationPortalDbContext _context;
         private readonly IBlobService _blobService;
         private readonly IMapper _mapper;
         private readonly IValidator<JobApplicantDto> _validator;
         private readonly ILogger<JobApplicantsController> _logger;
 
-        public JobApplicantsController(IJobApplicantsRepository repository, IBlobService blobService, IMapper mapper, IValidator<JobApplicantDto> validator, ILogger<JobApplicantsController> logger)
+        public JobApplicantsController(JobApplicationPortalDbContext context, IBlobService blobService, IMapper mapper, IValidator<JobApplicantDto> validator, ILogger<JobApplicantsController> logger)
         {
             _validator = validator;
-            _repository = repository;
+            _context = context;
             _blobService = blobService;
             _mapper = mapper;
             _logger = logger;
@@ -51,33 +53,33 @@ namespace JobApplicationApi.Controllers
 
                 var jobApplicant = _mapper.Map<JobApplicants>(model);
 
-                jobApplicant.UniqueId = Guid.NewGuid().ToString();
-                var containerName = jobApplicant.UniqueId;
+                jobApplicant.Id = Guid.NewGuid();
+                var containerName = jobApplicant.Id;
 
-                _logger.LogInformation("Uploading resume for job applicant {UniqueId}.", jobApplicant.UniqueId);
+                _logger.LogInformation("Uploading resume for job applicant {Id}.", jobApplicant.Id);
                 if (model.Resume != null)
                 {
                     var resumeFileName = $"Resumes/{model.Resume.FileName}";
-                    await _blobService.UploadFileBlobAsync(model.Resume, containerName, resumeFileName);
+                    await _blobService.UploadFileBlobAsync(model.Resume, containerName.ToString(), resumeFileName);
                     jobApplicant.ResumeFileName = model.Resume.FileName;
                 }
 
-                _logger.LogInformation("Uploading certifications for job applicant {UniqueId}.", jobApplicant.UniqueId);
+                _logger.LogInformation("Uploading certifications for job applicant {Id}.", jobApplicant.Id);
                 if (model.Certifications != null)
                 {
                     jobApplicant.CertificationsFilesNames = new List<string>();
                     foreach (var certification in model.Certifications)
                     {
                         var resumeFileName = $"Certifications/{certification.FileName}";
-                        await _blobService.UploadFileBlobAsync(certification, containerName, resumeFileName);
+                        await _blobService.UploadFileBlobAsync(certification, containerName.ToString(), resumeFileName);
                         jobApplicant.CertificationsFilesNames.Add(certification.FileName);
                     }
                 }
 
-                await _repository.AddJobApplicantAsync(jobApplicant);
-                await _repository.SaveChangesAsync();
+                await _context.JobApplicants.AddAsync(jobApplicant);
+                await _context.SaveChangesAsync();
 
-                _logger.LogInformation("Job applicant {UniqueId} submitted successfully.", jobApplicant.UniqueId);
+                _logger.LogInformation("Job applicant {Id} submitted successfully.", jobApplicant.Id);
                 return Ok(new JobApplicationResponse() { Success = true, Message = "Application submitted successfully." });
             }
             catch (Exception ex)
@@ -88,62 +90,62 @@ namespace JobApplicationApi.Controllers
 
         }
 
-        [HttpGet("downloadResumeByApplicantId/{uniqueId}")]
-        public async Task<IActionResult> DownloadResume(string uniqueId)
+        [HttpGet("downloadResumeByApplicantId/{id}")]
+        public async Task<IActionResult> DownloadResume(Guid id)
         {
             try
             {
-                _logger.LogInformation("Fetching resume for job applicant {UniqueId}.", uniqueId);
-                var jobApplicant = await _repository.GetJobApplicantByUniqueIdAsync(uniqueId);
+                _logger.LogInformation("Fetching resume for job applicant {id}.", id);
+                var jobApplicant = await _context.JobApplicants.FirstOrDefaultAsync(x => x.Id == id);
 
                 if (jobApplicant == null)
                 {
-                    _logger.LogWarning("Job applicant {UniqueId} not found.", uniqueId);
+                    _logger.LogWarning("Job applicant {Id} not found.", id);
                     return NotFound(new JobApplicationResponse() { Success = false, Message = "Job applicant not found." });
                 }
 
                 if (string.IsNullOrEmpty(jobApplicant.ResumeFileName))
                 {
-                    _logger.LogWarning("Resume file path is required for job applicant {UniqueId}.", uniqueId);
+                    _logger.LogWarning("Resume file path is required for job applicant {id}.", id);
                     return BadRequest(new JobApplicationResponse() { Success = false, Message = "File path is required." });
                 }
 
                 var relativePath = $"Resumes/{jobApplicant.ResumeFileName}";
-                var fileData = await _blobService.DownloadFileBlobAsync(uniqueId, relativePath);
+                var fileData = await _blobService.DownloadFileBlobAsync(id.ToString(), relativePath);
 
                 if (fileData == null)
                 {
-                    _logger.LogWarning("Resume file not found for job applicant {UniqueId}.", uniqueId);
+                    _logger.LogWarning("Resume file not found for job applicant {id}.", id);
                     return NotFound(new JobApplicationResponse() { Success = false, Message = "File not found." });
                 }
 
-                _logger.LogInformation("Resume file fetched successfully for job applicant {UniqueId}.", uniqueId);
+                _logger.LogInformation("Resume file fetched successfully for job applicant {id}.", id);
                 return File(fileData, "application/octet-stream", jobApplicant.ResumeFileName);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "An error occurred while downloading the resume for job applicant {UniqueId}.", uniqueId);
+                _logger.LogError(ex, "An error occurred while downloading the resume for job applicant {id}.", id);
                 return StatusCode(500, new JobApplicationResponse() { Success = false, Message = "An error occurred while processing your request." });
             }
         }
 
-        [HttpGet("downloadCertificationsByApplicantId/{uniqueId}")]
-        public async Task<IActionResult> DownloadCertifications(string uniqueId)
+        [HttpGet("downloadCertificationsByApplicantId/{id}")]
+        public async Task<IActionResult> DownloadCertifications(Guid id)
         {
             try
             {
-                _logger.LogInformation("Fetching certifications for job applicant {UniqueId}.", uniqueId);
-                var jobApplicant = await _repository.GetJobApplicantByUniqueIdAsync(uniqueId);
+                _logger.LogInformation("Fetching certifications for job applicant {id}.", id);
+                var jobApplicant = await _context.JobApplicants.FirstOrDefaultAsync(x => x.Id == id);
 
                 if (jobApplicant == null)
                 {
-                    _logger.LogWarning("Job applicant {UniqueId} not found.", uniqueId);
+                    _logger.LogWarning("Job applicant {id} not found.", id);
                     return NotFound(new JobApplicationResponse() { Success = false, Message = "Job applicant not found." });
                 }
 
                 if (jobApplicant.CertificationsFilesNames.Count < 1)
                 {
-                    _logger.LogWarning("No certifications found for job applicant {UniqueId}.", uniqueId);
+                    _logger.LogWarning("No certifications found for job applicant {id}.", id);
                     return BadRequest(new JobApplicationResponse() { Success = false, Message = "No certifications found." });
                 }
 
@@ -156,7 +158,7 @@ namespace JobApplicationApi.Controllers
                     {
                         var relativePath = $"Certifications/{cert}";
 
-                        var fileData = await _blobService.DownloadFileBlobAsync(uniqueId, relativePath);
+                        var fileData = await _blobService.DownloadFileBlobAsync(id.ToString(), relativePath);
                         if (fileData != null)
                         {
                             var entry = archive.CreateEntry(cert);
@@ -177,12 +179,12 @@ namespace JobApplicationApi.Controllers
                 memory.Position = 0;
                 System.IO.File.Delete(zipPath);
 
-                _logger.LogInformation("Certifications fetched successfully for job applicant {UniqueId}.", uniqueId);
+                _logger.LogInformation("Certifications fetched successfully for job applicant {id}.", id);
                 return File(memory, "application/zip", zipName);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "An error occurred while downloading certifications for job applicant {UniqueId}.", uniqueId);
+                _logger.LogError(ex, "An error occurred while downloading certifications for job applicant {id}.", id);
                 return StatusCode(500, new JobApplicationResponse() { Success = false, Message = "An error occurred while processing your request." });
             }
         }
@@ -193,7 +195,7 @@ namespace JobApplicationApi.Controllers
             try
             {
                 _logger.LogInformation("Fetching all job applicants.");
-                var jobApplicants = await _repository.GetAllJobApplicantsAsync();
+                var jobApplicants = await _context.JobApplicants.ToListAsync();
 
                 return Ok(_mapper.Map<List<JobApplicantViewModel>>(jobApplicants));
             }
@@ -204,17 +206,17 @@ namespace JobApplicationApi.Controllers
             }
         }
 
-        [HttpGet("getJobApplicantById/{uniqueId}")]
-        public async Task<IActionResult> GetJobApplicantById(string uniqueId)
+        [HttpGet("getJobApplicantById/{id}")]
+        public async Task<IActionResult> GetJobApplicantById(Guid id)
         {
             try
             {
-                _logger.LogInformation("Fetching job applicant by unique ID {UniqueId}.", uniqueId);
-                var jobApplicant = await _repository.GetJobApplicantByUniqueIdAsync(uniqueId);
+                _logger.LogInformation("Fetching job applicant by unique ID {id}.", id);
+                var jobApplicant = await _context.JobApplicants.FirstOrDefaultAsync(x => x.Id == id);
 
                 if (jobApplicant == null)
                 {
-                    _logger.LogWarning("Job applicant {UniqueId} not found.", uniqueId);
+                    _logger.LogWarning("Job applicant {id} not found.", id);
                     return NotFound(new JobApplicationResponse() { Success = false, Message = "Job applicant not found." });
                 }
 
@@ -222,7 +224,7 @@ namespace JobApplicationApi.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "An error occurred while fetching job applicant by unique ID {UniqueId}.", uniqueId);
+                _logger.LogError(ex, "An error occurred while fetching job applicant by unique ID {id}.", id);
                 return StatusCode(500, new JobApplicationResponse() { Success = false, Message = "An error occurred while processing your request." });
             }
         }
