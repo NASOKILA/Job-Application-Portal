@@ -2,7 +2,6 @@
 using FluentValidation;
 using JobApplicationPortal.Backend.Responses;
 using JobApplicationPortal.Backend.Services;
-using JobApplicationPortal.DB;
 using JobApplicationPortal.Models.DTOModels;
 using JobApplicationPortal.Models.Interfaces;
 using JobApplicationPortal.Models.ViewModels;
@@ -20,7 +19,7 @@ namespace JobApplicationApi.Controllers
         private readonly IMapper _mapper;
         private readonly IValidator<JobApplicantDto> _validator;
 
-        public JobApplicantsController(JobApplicantService jobApplicantService, JobApplicationPortalDbContext context, IBlobService blobService, IMapper mapper, IValidator<JobApplicantDto> validator, ILogger<JobApplicantsController> logger)
+        public JobApplicantsController(JobApplicantService jobApplicantService, IBlobService blobService, IMapper mapper, IValidator<JobApplicantDto> validator)
         {
             _jobApplicantService = jobApplicantService;
             _validator = validator;
