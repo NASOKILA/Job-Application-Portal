@@ -1,5 +1,6 @@
 using FluentValidation;
 using JobApplicationPortal.Backend.API.Mappers;
+using JobApplicationPortal.Backend.Middlewares;
 using JobApplicationPortal.DB;
 using JobApplicationPortal.Models.Interfaces;
 using JobApplicationPortal.Services;
@@ -50,6 +51,8 @@ app.UseHttpsRedirection();
 app.UseCors("AllowSpecificOrigin");
 
 app.UseAuthorization();
+
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.MapControllers();
 
